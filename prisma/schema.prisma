@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ✅ Modelo de Usuario
+model Usuario {
+  id       Int       @id @default(autoincrement())
+  username String    @unique
+  email    String    @unique
+  password String
+  rol      Rol
+  reservas Reserva[]
+
+  Perfil Perfil?
+}
+
+// ✅ Modelo de Perfil (Información adicional del usuario)
+model Perfil {
+  id            Int     @id @default(autoincrement())
+  usuarioId     Int     @unique
+  nombre        String?
+  apellidos     String?
+  telefono      String?
+  direccion     String?
+  fotoPerfil    String?
+  instagram_url String?
+
+  // Relación inversa uno a uno
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+// ✅ Modelo de Servicio (Define un servicio de la peluquería)
+model Servicio {
+  id          Int     @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  precio      Float
+  duracion    Int // Minutos
+
+  reservas   Reserva[]
+  estilistas EstilistaServicio[]
+}
+
+// ✅ Modelo de Estilista
+model Estilista {
+  id        Int                 @id @default(autoincrement())
+  nombre    String
+  horarios  Horario[]
+  reservas  Reserva[]
+  servicios EstilistaServicio[]
+}
+
+// ✅ Modelo Intermedio Estilista-Servicio (Muchos a Muchos)
+model EstilistaServicio {
+  estilistaId Int
+  servicioId  Int
+
+  estilista Estilista @relation(fields: [estilistaId], references: [id])
+  servicio  Servicio  @relation(fields: [servicioId], references: [id])
+
+  @@id([estilistaId, servicioId]) // Clave primaria compuesta
+}
+
+// ✅ Modelo de Reservas
+model Reserva {
+  id          Int           @id @default(autoincrement())
+  usuarioId   Int
+  estilistaId Int
+  servicioId  Int
+  fecha       DateTime
+  estado      EstadoReserva @default(PENDIENTE)
+
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
+  estilista Estilista @relation(fields: [estilistaId], references: [id])
+  servicio  Servicio  @relation(fields: [servicioId], references: [id])
+}
+
+// ✅ Modelo de Horarios (Días y Horas de Trabajo
+
+model Horario {
+  id          Int      @id @default(autoincrement())
+  estilistaId Int
+  dia         String
+  horaInicio  DateTime
+  horaFin     DateTime
+
+  estilista Estilista @relation(fields: [estilistaId], references: [id])
+}
+
+enum Rol {
+  ADMIN
+  CLIENTE
+  ESTILISTA
+}
+
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+}
