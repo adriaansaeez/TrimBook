@@ -1,8 +1,11 @@
 import express from 'express';
 import { config } from 'dotenv';
 import usuarioRoutes from './routes/usuario.routes.js';
+import dotenv from 'dotenv';
 
-config(); // Cargar variables de entorno
+
+
+dotenv.config(); // Cargar variables de entorno
 
 const app = express();
 app.use(express.json()); // Para recibir JSON en las solicitudes
