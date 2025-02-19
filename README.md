@@ -44,15 +44,19 @@ Aquí tienes algunas de las futuras mejoras y funcionalidades que estamos planea
 
 ```bash
 git clone https://github.com/tuusuario/trimbook-code.git
+```
 
 ```bash
 cd trimbook-code
+```
 
 ```bash
 npm install
+```
 
 ```bash
 npm run dev
+```
 
 el resto a proximamento....
 
