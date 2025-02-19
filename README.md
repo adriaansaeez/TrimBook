@@ -29,12 +29,27 @@
 
 Aquí tienes algunas de las futuras mejoras y funcionalidades que estamos planeando para **TrimBook**:
 
-- **Integración de Pagos Online**: Permitir que los clientes paguen directamente al hacer la reserva.
-- **Mejoras en la Personalización de Notificaciones**: Permitir la personalización de los mensajes enviados a los clientes.
-- **Vista de Calendario para Administradores**: Implementar un calendario visual para gestionar de manera más fácil las reservas.
-- **Soporte para Múltiples Localizaciones**: Permitir que peluquerías con varias ubicaciones gestionen cada una de ellas desde el mismo panel.
-- **Panel de Estadísticas Avanzadas**: Implementar gráficos interactivos que muestren estadísticas detalladas de las reservas, ingresos, y más.
-- **Integración con Redes Sociales**: Permitir que los clientes se registren a través de sus cuentas de redes sociales como Facebook o Google.
+### Backend
+- ✅ **Autenticación de Usuarios**: Implementar el sistema de login y registro de usuarios para clientes y administradores.
+- ❌ **Gestión de Estilistas y Servicios**: Crear API para añadir, editar y eliminar estilistas y servicios.
+- ❌ **Gestión de Reservas**: Implementar lógica para gestionar las reservas, incluyendo la creación, edición, eliminación y validación de horarios disponibles.
+- ❌ **Notificaciones Automáticas**: Enviar notificaciones por correo electrónico 24 horas antes de la cita.
+- ❌ **Dashboard de Administrador**: Desarrollar endpoints para generar informes de reservas, ingresos, clientes y otros datos importantes para los administradores.
+- ✅1/2 **API RESTful**: Crear una API RESTful para que el frontend pueda comunicarse con el backend (gestión de servicios, reservas, etc.).
+- ✅1/2 **Autorización y Roles de Usuario**: Asegurar que solo los administradores tengan acceso a ciertas funciones como la gestión de estilistas y el dashboard.
+- ❌ **Integración de Pagos Online**: Implementar un sistema de pagos como Stripe o PayPal para que los clientes puedan pagar las reservas en línea.
+- ❌ **Control de Disponibilidad de Estilistas**: Implementar una lógica para que los estilistas puedan definir su disponibilidad y evitar reservas dobles.
+
+### Frontend
+- ❌ **Interfaz de Cliente**: Desarrollar la página de inicio donde los clientes puedan ver los servicios disponibles, estilistas y hacer reservas.
+- ❌ **Formulario de Reserva**: Crear formularios para que los clientes seleccionen el servicio, estilista y horario.
+- ❌ **Perfil de Usuario**: Permitir que los clientes vean, editen y gestionen sus reservas desde su perfil.
+- ❌ **Interfaz de Administrador**: Crear una vista de administrador donde se puedan gestionar clientes, estilistas, servicios y consultar las reservas.
+- ❌ **Notificaciones Frontend**: Mostrar notificaciones a los usuarios sobre cambios en sus reservas, confirmaciones y recordatorios.
+- ❌ **Panel de Estadísticas para Administradores**: Mostrar estadísticas gráficas y detalladas sobre las reservas y los ingresos generados.
+- ❌ **Vista de Calendario**: Implementar una vista de calendario interactiva para que los administradores gestionen las reservas y disponibilidad de estilistas.
+- ❌ **Mejoras en la Interfaz de Usuario (UI)**: Optimizar la experiencia visual con mejoras en diseño, animaciones y adaptabilidad para dispositivos móviles.
+- ❌ **Registro y Autenticación de Clientes**: Crear las pantallas de registro, login y recuperación de contraseña para los clientes.
 
 ---
 
