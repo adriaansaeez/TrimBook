@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import usuarioRoutes from './src/routes/usuario.routes.js';
 import authRoutes from './src/routes/auth.routes.js';
 import perfilRoutes from "./src/routes/perfil.routes.js";
+import estilistaRoutes from "./src/routes/estilista.routes.js";
 
 
 
@@ -15,6 +16,8 @@ app.use(express.json()); // Para recibir JSON en las solicitudes
 app.use("/api/auth", authRoutes); // Rutas de autenticación
 app.use('/api/usuarios', usuarioRoutes);
 app.use("/api/perfil", perfilRoutes); // Agregar rutas del perfil
+app.use("/api/estilistas", estilistaRoutes);
+
 
 
 
