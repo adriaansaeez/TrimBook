@@ -19,7 +19,7 @@ export const createPerfil = async (usuarioId, nombre="", apellidos = "", telefon
   }
 };
 // 📌 Obtener perfil por usuarioId
-export const obtenerPerfil = async (req, res) => {
+export const getPerfilByUsuarioId = async (req, res) => {
     try {
       const { usuarioId } = req.params;
       const perfil = await prisma.perfil.findUnique({
@@ -37,7 +37,7 @@ export const obtenerPerfil = async (req, res) => {
   };
   
   // 📌 Actualizar perfil
-  export const actualizarPerfil = async (req, res) => {
+  export const updatePerfil = async (req, res) => {
     try {
       const { usuarioId } = req.params;
       const { nombre, apellidos, telefono, direccion, fotoPerfil, instagram_url } = req.body;

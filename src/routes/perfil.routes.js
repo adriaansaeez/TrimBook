@@ -1,10 +1,9 @@
 import express from "express";
-import { obtenerPerfil, actualizarPerfil, eliminarPerfil } from "../controllers/perfil.controller.js";
+import { getPerfilByUsuarioId, updatePerfil} from "../controllers/perfil.controller.js";
 
 const router = express.Router();
 
-router.get("/:usuarioId", obtenerPerfil);
-router.put("/:usuarioId", actualizarPerfil);
-router.delete("/:usuarioId", eliminarPerfil);
+router.get("/:usuarioId", getPerfilByUsuarioId);
+router.put("/:usuarioId", updatePerfil);
 
 export default router;
