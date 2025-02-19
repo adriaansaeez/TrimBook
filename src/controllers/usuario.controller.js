@@ -146,11 +146,13 @@ export const updateUsuario = async (req, res) => {
 export const deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params;
+
     await prisma.usuario.delete({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
     });
-    res.json({ mensaje: 'Usuario eliminado correctamente' });
+
+    res.json({ message: "Usuario y perfil eliminados correctamente" });
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar usuario' });
+    res.status(500).json({ error: "Error al eliminar usuario" });
   }
 };

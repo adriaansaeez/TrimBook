@@ -37,7 +37,7 @@ model Perfil {
   instagram_url String?
 
   // Relación inversa uno a uno
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 }
 
 // ✅ Modelo de Servicio (Define un servicio de la peluquería)

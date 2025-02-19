@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import prisma from "../config/prisma.js";
-import { crearPerfil } from "./perfil.controller.js";
+import { createPerfil } from "./perfil.controller.js";
 
 dotenv.config();
 
@@ -44,7 +44,7 @@ export const registerUsuario = async (req, res) => {
     });
 
     // Crear perfil automáticamente
-    await crearPerfil(usuario.id, usuario.username, "", "", "", "", "");
+    await createPerfil(usuario.id, usuario.username, "", "", "", "", "");
 
     res.status(201).json({ message: "Usuario registrado correctamente", usuario });
   } catch (error) {
