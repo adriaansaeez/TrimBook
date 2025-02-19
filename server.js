@@ -10,8 +10,8 @@ const app = express();
 app.use(express.json()); // Para recibir JSON en las solicitudes
 
 // Rutas
-app.use('/api/usuarios', usuarioRoutes);
 app.use("/api/auth", authRoutes); // Rutas de autenticación
+app.use('/api/usuarios', usuarioRoutes);
 
 
 const PORT = process.env.PORT || 3000;
