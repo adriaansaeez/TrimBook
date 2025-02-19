@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -36,40 +30,31 @@ model Perfil {
   fotoPerfil    String?
   instagram_url String?
 
-  // Relación inversa uno a uno
   usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-}
-
-// ✅ Modelo de Servicio (Define un servicio de la peluquería)
-model Servicio {
-  id          Int     @id @default(autoincrement())
-  nombre      String
-  descripcion String?
-  precio      Float
-  duracion    Int // Minutos
-
-  reservas   Reserva[]
-  estilistas EstilistaServicio[]
 }
 
 // ✅ Modelo de Estilista
 model Estilista {
-  id        Int                 @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   nombre    String
   horarios  Horario[]
   reservas  Reserva[]
-  servicios EstilistaServicio[]
+
+  servicios Servicio[] // Un estilista puede tener varios servicios
 }
 
-// ✅ Modelo Intermedio Estilista-Servicio (Muchos a Muchos)
-model EstilistaServicio {
-  estilistaId Int
-  servicioId  Int
+// ✅ Modelo de Servicio (Cada servicio pertenece a un solo estilista)
+model Servicio {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  precio      Decimal
+  duracion    Int
 
-  estilista Estilista @relation(fields: [estilistaId], references: [id])
-  servicio  Servicio  @relation(fields: [servicioId], references: [id])
+  estilistaId Int       
+  estilista   Estilista @relation(fields: [estilistaId], references: [id], onDelete: Cascade)
 
-  @@id([estilistaId, servicioId]) // Clave primaria compuesta
+  reservas    Reserva[] // Relación con las reservas
 }
 
 // ✅ Modelo de Reservas
@@ -81,23 +66,24 @@ model Reserva {
   fecha       DateTime
   estado      EstadoReserva @default(PENDIENTE)
 
-  usuario   Usuario   @relation(fields: [usuarioId], references: [id])
-  estilista Estilista @relation(fields: [estilistaId], references: [id])
-  servicio  Servicio  @relation(fields: [servicioId], references: [id])
+  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  estilista Estilista @relation(fields: [estilistaId], references: [id], onDelete: Cascade)
+  servicio  Servicio  @relation(fields: [servicioId], references: [id], onDelete: Cascade)
 }
 
-// ✅ Modelo de Horarios (Días y Horas de Trabajo
-
+// ✅ Modelo de Horarios (Días y Horas de Trabajo)
 model Horario {
   id          Int      @id @default(autoincrement())
   estilistaId Int
-  dia         String
-  horaInicio  DateTime
-  horaFin     DateTime
+  dia         DiaSemana
+  horaInicio  String
+  horaFin     String
 
-  estilista Estilista @relation(fields: [estilistaId], references: [id])
+  estilista Estilista @relation(fields: [estilistaId], references: [id], onDelete: Cascade)
 }
 
+
+// 🎨 Enums para definir roles y días de la semana
 enum Rol {
   ADMIN
   CLIENTE
@@ -108,4 +94,14 @@ enum EstadoReserva {
   PENDIENTE
   CONFIRMADA
   CANCELADA
+}
+
+enum DiaSemana {
+  LUNES
+  MARTES
+  MIERCOLES
+  JUEVES
+  VIERNES
+  SABADO
+  DOMINGO
 }

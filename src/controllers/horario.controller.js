@@ -1,30 +1,49 @@
 import prisma from "../config/prisma.js";
+import dotenv from 'dotenv';
 
-//CRUD
+dotenv.config(); // Cargar variables de entorno
+const DIAS_SEMANA = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+
+
+// CRUD
 // ✅ Crear un horario
 export const createHorario = async (req, res) => {
-  try {
-    const { estilistaId, diaSemana, horaInicio, horaFin } = req.body;
-
-    if (!estilistaId || !diaSemana || !horaInicio || !horaFin) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    try {
+      let { estilistaId, dia, horaInicio, horaFin } = req.body;
+  
+      if (!estilistaId || !dia || !horaInicio || !horaFin) {
+        return res.status(400).json({ error: "Todos los campos son obligatorios" });
+      }
+  
+      dia = dia.toUpperCase();
+  
+      const DIAS_SEMANA = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+      if (!DIAS_SEMANA.includes(dia)) {
+        return res.status(400).json({ error: `Día inválido. Debe ser uno de: ${DIAS_SEMANA.join(", ")}` });
+      }
+  
+      // Validar formato HH:MM usando regex
+      const horaRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+      if (!horaRegex.test(horaInicio) || !horaRegex.test(horaFin)) {
+        return res.status(400).json({ error: "Las horas deben estar en formato HH:MM (ejemplo: 09:00, 14:30)" });
+      }
+  
+      const horario = await prisma.horario.create({
+        data: {
+          estilistaId,
+          dia,
+          horaInicio,
+          horaFin,
+        },
+      });
+  
+      res.status(201).json(horario);
+    } catch (error) {
+      console.error("❌ Error al crear horario:", error);
+      res.status(500).json({ error: "Error en el servidor" });
     }
-
-    const horario = await prisma.horario.create({
-      data: {
-        estilistaId,
-        diaSemana,
-        horaInicio,
-        horaFin,
-      },
-    });
-
-    res.status(201).json(horario);
-  } catch (error) {
-    console.error("❌ Error al crear horario:", error);
-    res.status(500).json({ error: "Error en el servidor" });
-  }
-};
+  };
+  
 
 // ✅ Obtener todos los horarios
 export const getHorarios = async (req, res) => {
@@ -60,16 +79,15 @@ export const getHorarioById = async (req, res) => {
   }
 };
 
-
 // ✅ Actualizar un horario
 export const updateHorario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { diaSemana, horaInicio, horaFin } = req.body;
+    const { dia, horaInicio, horaFin } = req.body;
 
     const horario = await prisma.horario.update({
       where: { id: parseInt(id) },
-      data: { diaSemana, horaInicio, horaFin },
+      data: { dia, horaInicio, horaFin },
     });
 
     res.json(horario);
@@ -95,46 +113,47 @@ export const deleteHorario = async (req, res) => {
   }
 };
 
+// FILTROS
 
-//FILTROS
 // ✅ Obtener los horarios de un estilista por día de la semana
 export const getHorariosByEstilistaAndDay = async (req, res) => {
-    try {
-      const { estilistaId, diaSemana } = req.params;
-  
-      const horarios = await prisma.horario.findMany({
-        where: {
-          estilistaId: parseInt(estilistaId),
-          diaSemana: diaSemana, // Filtrar por día de la semana
-        },
-      });
-  
-      if (horarios.length === 0) {
-        return res.status(404).json({ error: "No hay horarios para este estilista en ese día" });
-      }
-  
-      res.json(horarios);
-    } catch (error) {
-      console.error("❌ Error al obtener los horarios:", error);
-      res.status(500).json({ error: "Error en el servidor" });
+  try {
+    const { estilistaId, dia } = req.params;
+
+    const horarios = await prisma.horario.findMany({
+      where: {
+        estilistaId: parseInt(estilistaId),
+        dia: dia, // Corregido: antes estaba como diaSemana
+      },
+    });
+
+    if (horarios.length === 0) {
+      return res.status(404).json({ error: "No hay horarios para este estilista en ese día" });
     }
-  };
-  // ✅ Obtener un horario por ID
+
+    res.json(horarios);
+  } catch (error) {
+    console.error("❌ Error al obtener los horarios:", error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+};
+
+// ✅ Obtener todos los horarios de un estilista
 export const getHorariosByEstilistaId = async (req, res) => {
-    try {
-      const { estilistaId  } = req.params;
-  
-      const horarios = await prisma.horario.findUnique({
-        where: { estilistaId : parseInt(estilistaId ) },
-      });
-  
-      if (horarios.length === 0) {
-        return res.status(404).json({ error: "No hay horarios para este estilista" });
-      }
-  
-      res.json(horarios);
-    } catch (error) {
-        console.error("❌ Error al obtener los horarios del estilista:", error);
-        res.status(500).json({ error: "Error en el servidor" });
-      }
-  };
+  try {
+    const { estilistaId } = req.params;
+
+    const horarios = await prisma.horario.findMany({
+      where: { estilistaId: parseInt(estilistaId) },
+    });
+
+    if (horarios.length === 0) {
+      return res.status(404).json({ error: "No hay horarios para este estilista" });
+    }
+
+    res.json(horarios);
+  } catch (error) {
+    console.error("❌ Error al obtener los horarios del estilista:", error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+};

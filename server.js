@@ -5,8 +5,7 @@ import authRoutes from './src/routes/auth.routes.js';
 import perfilRoutes from "./src/routes/perfil.routes.js";
 import estilistaRoutes from "./src/routes/estilista.routes.js";
 import horarioRoutes from "./src/routes/horario.routes.js";
-
-
+import servicioRoutes from "./src/routes/servicio.routes.js";
 
 
 dotenv.config(); // Cargar variables de entorno
@@ -20,6 +19,8 @@ app.use('/api/usuarios', usuarioRoutes);// Agregar rutas del usuario
 app.use("/api/perfil", perfilRoutes); // Agregar rutas del perfil
 app.use("/api/estilistas", estilistaRoutes);// Agregar rutas del estilista
 app.use("/api/horarios", horarioRoutes); // Agregar rutas del horario
+app.use("/api/servicios", servicioRoutes); // Agregar rutas de los servicios
+
 
 
 

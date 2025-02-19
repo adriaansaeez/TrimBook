@@ -1,5 +1,6 @@
 import prisma from "../config/prisma.js";
 
+
 // Crear perfil al registrar usuario
 export const createPerfil = async (usuarioId, nombre="", apellidos = "", telefono = "", direccion = "", fotoPerfil = "", instagram_url = "") => {
   try {

@@ -1,5 +1,8 @@
 import prisma from '../config/prisma.js';
 import bcrypt from "bcryptjs";
+import dotenv from 'dotenv';
+
+dotenv.config(); // Cargar variables de entorno
 
 
 // Obtener todos los usuarios
